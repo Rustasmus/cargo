@@ -9,46 +9,40 @@ class CustomerAdmin(admin.ModelAdmin):
         'telephone_number',
         'passport',
         'email',
-        'create_date',
-        'update_date',
     )
-    list_filter = ('is_delete', 'name', 'surname')
+    list_filter = ('create_date',)
     search_fields = (
         'name',
         'surname',
         'telephone_number',
         'passport'
     )
-    ordering = ('-create_date', )
+
 
 class CargoAdmin(admin.ModelAdmin):
     list_display = (
         'length',
         'width',
-        'higth',
+        'hight',
         'volume',
         'weight',
         'category',
-        'create_date',
-        'update_date',
     )
-    list_filter = ('volume', 'weight', 'category')
+    list_filter = ('create_date', 'category')
     search_fields = (
         'volume', 
         'weight', 
-        'category'
+        'height'
     )
-    ordering = ('-create_date', )
+
     
 class CategoryAdmin(admin.ModelAdmin):
     list_display = (
         'name',
-        'create_date',
-        'update_date',
     )
-    list_filter = ('name', )
+    list_filter = ('create_date', )
     search_fields = ('name', )
-    ordering = ('-create_date', )
+
     
 class TruckAdmin(admin.ModelAdmin):
     list_display = (
@@ -58,20 +52,16 @@ class TruckAdmin(admin.ModelAdmin):
         'brend',
         'model',
         'vin_code',
-        'cargo_category',
-        'create_date',
-        'update_date',
+        'get_categories'
     )
+    list_filter = ('create_date', 'brend', 'volume')
     search_fields = (
         'truck_number',
         'weight',
-        'volume',
-        'brend',
         'model',
         'vin_code',
-        'cargo_category',
     )
-    ordering = ('-create_date', )
+
     
 class DriverAdmin(admin.ModelAdmin):
     list_display = (
@@ -80,7 +70,7 @@ class DriverAdmin(admin.ModelAdmin):
         'telephone_number',
         'passport',
         'driver_license',
-        'cargo_category',
+        'get_categories',
         'create_date',
         'update_date',
     )
@@ -88,48 +78,42 @@ class DriverAdmin(admin.ModelAdmin):
         'name',
         'surname',
         'passport',
+        'telephone_number',
         'driver_license',
-        'cargo_category',
     )
     list_filter = (
-        'name',
-        'surname',
-        'passport',
-        'driver_license',
+        'create_date',
         'cargo_category',
     )
+       
         
 class LocationAdmin(admin.ModelAdmin):
     list_display = (
         'country',
         'city',
         'address',
-        'create_date',
-        'update_date',
     )
-    list_filter = filter = (
+    list_filter = (
         'country',
         'city',
-        'address'
+        'create_date'
     )
     search_fields = (
         'country',
         'city',
         'address'
     )
+       
         
 class InvoiceAdmin(admin.ModelAdmin):
     list_display = (
         'customer',
-        'cargo',
+        'get_cargos',
         'point_a',
         'point_b',
-        'create_date',
-        'update_date',
     )   
-    list_filter = filter = (
-        'customer',
-        'cargo',
+    list_filter = (
+        'create_date',
         'point_a',
         'point_b',
     )
@@ -139,48 +123,41 @@ class InvoiceAdmin(admin.ModelAdmin):
         'point_a',
         'point_b',
     )
+    
     
 class WayBillAdmin(admin.ModelAdmin):
     list_display = (
         'drivers',
         'truck',
-        'poin_a',
+        'point_a',
         'point_b',
-        'create_date',
-        'update_date',
     )
-    list_filter = filter = (
-        'drivers',
-        'truck',
-        'poin_a',
+    list_filter = (
+        'create_date',
+        'point_a',
         'point_b',
     )
     search_fields = (
         'drivers',
         'truck',
-        'poin_a',
+        'point_a',
         'point_b',
     )
     
+    
 class OrderAdmin(admin.ModelAdmin):
     list_display = (
-        'invoice',
+        'get_invoices',
         'way_bill',
-        'create_date',
-        'update_date',
     )
     list_filter = filter = (
-        'invoice',
-        'way_bill',
         'create_date',
-        'update_date',
     )
     search_fields = (
         'invoice',
         'way_bill',
-        'create_date',
-        'update_date',
     )
+    
     
 admin.site.register(Customer, CustomerAdmin)
 admin.site.register(Cargo, CargoAdmin) 

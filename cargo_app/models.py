@@ -1,8 +1,7 @@
 from unicodedata import name
 from django.db import models
-from phonenumber_field.modelfields import PhoneNumberField
 from django.core.validators import MinValueValidator
-
+from phonenumber_field.modelfields import PhoneNumberField
 
 # Create your models here.
 class Customer(models.Model):
@@ -40,7 +39,7 @@ class Customer(models.Model):
         auto_now=True,
         verbose_name='Дата обновления записи'
     )
-    def __str__(self):
+    def _str_(self):
         return f'{self.surname} {self.name}'
     def save(self, *args, **kwargs):
         self.name = self.name.capitalize()
@@ -51,7 +50,6 @@ class Customer(models.Model):
         verbose_name = 'Клиент'
         verbose_name_plural = 'Клиенты'
         ordering = ('-create_date', )
-
 
 class Cargo(models.Model):
     
@@ -73,7 +71,7 @@ class Cargo(models.Model):
         verbose_name='Ширина груза',
         help_text='м'
     )
-    higth = models.DecimalField(
+    hight = models.DecimalField(
         validators=[
             MinValueValidator(0)
         ],
@@ -116,7 +114,7 @@ class Cargo(models.Model):
         auto_now=True,
         verbose_name='Дата обновления записи'
     )
-    def __str__(self):
+    def _str_(self):
         return f'Груз №{self.id}'
     def save(self, *args, **kwargs):
         self.volume = self.higth * self.length * self.width
@@ -127,7 +125,6 @@ class Cargo(models.Model):
         verbose_name_plural = 'Грузы'
         ordering = ('-create_date', )
 
-        
 class Category(models.Model):
     name = models.CharField(
         max_length=50,
@@ -149,8 +146,6 @@ class Category(models.Model):
         verbose_name_plural = 'Категории'
         ordering = ('-create_date', )
 
-    
-    
 class Truck(models.Model):
         
     truck_number = models.CharField(
@@ -203,16 +198,22 @@ class Truck(models.Model):
         auto_now=True,
         verbose_name='Дата обновления записи'
     )
-    def __str__(self):
+    
+    
+    def get_categories(self):
+        return '\n'.join(
+            [category.name for category in self.cargo_category.all()]
+        )
+        
+        
+    def _str_(self):
         return f'{self.vin_code}|{self.truck_number}'
        
     class Meta:
-        verbose_name = 'Грузовик',
-        verbose_name_plural = 'Грузовики',
+        verbose_name = 'Грузовик'
+        verbose_name_plural = 'Грузовики'
         ordering = ('-create_date', )
 
-    
-    
 class Driver(models.Model):
         
     name = models.CharField(
@@ -252,15 +253,28 @@ class Driver(models.Model):
         auto_now=True,
         verbose_name='Дата обновления записи'
     )
-    def __str__(self):
+    
+    
+    # def get_categories(self):
+    #     return '\n'.join(
+    #         self.cargo_category.all()
+    #     )
+    
+    
+    def get_categories(self):
+        return '\n'.join(
+            [category.name for category in self.cargo_category.all()]
+        )
+        
+        
+    def _str_(self):
         return f'Водитель: {self.name} {self.surname}'
        
     class Meta:
-        verbose_name = 'Водитель',
-        verbose_name_plural = 'Водители',
+        verbose_name = 'Водитель'
+        verbose_name_plural = 'Водители'
         ordering = ('-create_date', )
 
-    
 class Location(models.Model):
     
     city = models.CharField(
@@ -283,12 +297,12 @@ class Location(models.Model):
         auto_now=True,
         verbose_name='Дата обновления записи'
     )
-    def __str__(self):
+    def _str_(self):
         return f'{self.country} {self.city}{self.address}'
        
     class Meta:
-        verbose_name = 'Адрес',
-        verbose_name_plural = 'Адреса',
+        verbose_name = 'Адрес'
+        verbose_name_plural = 'Адреса'
         ordering = ('-create_date', )
 
         unique_together = ('country', 'city', 'address')
@@ -322,16 +336,22 @@ class Invoice(models.Model):
         auto_now=True,
         verbose_name='Дата обновления записи'
     )
-    def __str__(self):
+    
+    
+    def get_cargos(self):
+        return '\n'.join(
+            [cargo for cargo in self.cargo.all()]
+        )
+        
+        
+    def _str_(self):
         return f'Заявка № {self.id}'
        
     class Meta:
-        verbose_name = 'Заявка',
-        verbose_name_plural = 'Заявки',
+        verbose_name = 'Заявка'
+        verbose_name_plural = 'Заявки'
         ordering = ('-create_date', )
 
-        
-    
 class WayBill(models.Model):
     
     drivers = models.ForeignKey(
@@ -360,15 +380,14 @@ class WayBill(models.Model):
         auto_now=True,
         verbose_name='Дата обновления записи'
     )
-    def __str__(self):
+    def _str_(self):
         return f'Путивой лист № {self.id}'
        
     class Meta:
-        verbose_name = 'Путивой лист',
-        verbose_name_plural = 'Путевые листы',
+        verbose_name = 'Путивой лист'
+        verbose_name_plural = 'Путевые листы'
         ordering = ('-create_date', )
 
-    
 class Order(models.Model):
     
     invoice = models.ManyToManyField(
@@ -386,10 +405,18 @@ class Order(models.Model):
         auto_now=True,
         verbose_name='Дата обновления записи'
     )
-    def __str__(self):
+    
+    
+    def get_invoices(self):
+        return '\n'.join(
+            [invoice for invoice in self.invoice.all()]
+        )
+        
+        
+    def _str_(self):
         return f'Заказ № {self.id}'
        
     class Meta:
-        verbose_name = 'Заказ',
-        verbose_name_plural = 'Заказы',
+        verbose_name = 'Заказ'
+        verbose_name_plural = 'Заказы'
         ordering = ('-create_date', )
