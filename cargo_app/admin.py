@@ -23,7 +23,7 @@ class CargoAdmin(admin.ModelAdmin):
     list_display = (
         'length',
         'width',
-        'hight',
+        'higth',
         'volume',
         'weight',
         'category',
@@ -118,10 +118,16 @@ class InvoiceAdmin(admin.ModelAdmin):
         'point_b',
     )
     search_fields = (
-        'customer',
-        'cargo',
-        'point_a',
-        'point_b',
+        'customer__name',
+        'customer__surname',
+        'customer__passport',
+        # 'cargo',
+        'point_a__city',
+        'point_a__country',
+        'point_a__address',
+        'point_b__country',
+        'point_b__address',
+        'point_b__city',
     )
     
     
@@ -138,10 +144,17 @@ class WayBillAdmin(admin.ModelAdmin):
         'point_b',
     )
     search_fields = (
-        'drivers',
-        'truck',
-        'point_a',
-        'point_b',
+        'drivers__name',
+        'drivers__surname',
+        'drivers__passport',
+        'drivers__driver_license',
+        'truck__truck_number',
+        'point_a__country',
+        'point_a__city',
+        'point_a__address',
+        'point_b__country',
+        'point_b__city',
+        'point_b__address',
     )
     
     
@@ -154,8 +167,9 @@ class OrderAdmin(admin.ModelAdmin):
         'create_date',
     )
     search_fields = (
-        'invoice',
-        'way_bill',
+        'create_date'
+        'invoice__id',
+        'way_bill__id',
     )
     
     

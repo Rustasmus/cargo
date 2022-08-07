@@ -53,6 +53,11 @@ INSTALLED_APPS = [
     # installed lib
     'rest_framework',
     'phonenumber_field',
+    
+    # required for serving swagger ui's css/js files
+    'drf_yasg',
+    
+    'rest_framework_swagger',
 ]
 
 MIDDLEWARE = [

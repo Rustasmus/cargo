@@ -39,7 +39,7 @@ class Customer(models.Model):
         auto_now=True,
         verbose_name='Дата обновления записи'
     )
-    def _str_(self):
+    def __str__(self):
         return f'{self.surname} {self.name}'
     def save(self, *args, **kwargs):
         self.name = self.name.capitalize()
@@ -71,7 +71,7 @@ class Cargo(models.Model):
         verbose_name='Ширина груза',
         help_text='м'
     )
-    hight = models.DecimalField(
+    higth = models.DecimalField(
         validators=[
             MinValueValidator(0)
         ],
@@ -114,7 +114,7 @@ class Cargo(models.Model):
         auto_now=True,
         verbose_name='Дата обновления записи'
     )
-    def _str_(self):
+    def __str__(self):
         return f'Груз №{self.id}'
     def save(self, *args, **kwargs):
         self.volume = self.higth * self.length * self.width
@@ -206,7 +206,7 @@ class Truck(models.Model):
         )
         
         
-    def _str_(self):
+    def __str__(self):
         return f'{self.vin_code}|{self.truck_number}'
        
     class Meta:
@@ -267,7 +267,7 @@ class Driver(models.Model):
         )
         
         
-    def _str_(self):
+    def __str__(self):
         return f'Водитель: {self.name} {self.surname}'
        
     class Meta:
@@ -297,7 +297,7 @@ class Location(models.Model):
         auto_now=True,
         verbose_name='Дата обновления записи'
     )
-    def _str_(self):
+    def __str__(self):
         return f'{self.country} {self.city}{self.address}'
        
     class Meta:
@@ -340,11 +340,11 @@ class Invoice(models.Model):
     
     def get_cargos(self):
         return '\n'.join(
-            [cargo for cargo in self.cargo.all()]
+            [str(cargo) for cargo in self.cargo.all()]
         )
         
         
-    def _str_(self):
+    def __str__(self):
         return f'Заявка № {self.id}'
        
     class Meta:
@@ -380,7 +380,7 @@ class WayBill(models.Model):
         auto_now=True,
         verbose_name='Дата обновления записи'
     )
-    def _str_(self):
+    def __str__(self):
         return f'Путивой лист № {self.id}'
        
     class Meta:
@@ -409,11 +409,11 @@ class Order(models.Model):
     
     def get_invoices(self):
         return '\n'.join(
-            [invoice for invoice in self.invoice.all()]
+            [str(invoice) for invoice in self.invoice.all()]
         )
         
         
-    def _str_(self):
+    def __str__(self):
         return f'Заказ № {self.id}'
        
     class Meta:
